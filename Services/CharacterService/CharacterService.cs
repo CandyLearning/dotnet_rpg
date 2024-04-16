@@ -14,28 +14,30 @@ namespace dotnet_rpg.Services.CharacterService
             new Character{Id = 1, Name = "小糖果"}
         };
         
-        public List<Character> AddCharacter(Character newCharacter)
+        public async Task<ServiceResponse<List<Character>>> AddCharacter(Character newCharacter)
         {
+            // 定義服務回傳物件
+            var ServiceResponse = new ServiceResponse<List<Character>>();
             characters.Add(newCharacter);
-            return characters;
+            // 設定返回物件的 Data 屬性
+            ServiceResponse.Data = characters;            
+            return ServiceResponse;
         }
 
-        public List<Character> GetAllCharacters()
+        public async Task<ServiceResponse<List<Character>>> GetAllCharacters()
         {
-            return characters;
+            
+            var ServiceResponse = new ServiceResponse<List<Character>>();
+            ServiceResponse.Data = characters;
+            return ServiceResponse;
         }
 
-        public Character GetCharacterById(int id)
+        public async Task<ServiceResponse<Character>> GetCharacterById(int id)
         {
+            var ServiceResponse = new ServiceResponse<Character>();
             var character = characters.FirstOrDefault(c => c.Id == id);
-            if (character is not null)
-            {
-                return character;
-            }
-            else
-            {
-                throw new Exception("角色找不到!");
-            }
+            ServiceResponse.Data = character;
+            return ServiceResponse;
         }
     }
 }
