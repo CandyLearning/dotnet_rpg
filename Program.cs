@@ -1,6 +1,9 @@
 global using dotnet_rpg.Models;
 global using dotnet_rpg.Services.CharacterService;
 global using dotnet_rpg.Dtos.Character;
+global using Microsoft.EntityFrameworkCore;
+global using dotnet_rpg.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // 註冊服務(套件)
+builder.Services.AddDbContext<DataContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // 客製 Service
