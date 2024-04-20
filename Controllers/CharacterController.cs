@@ -40,5 +40,17 @@ namespace dotnet_rpg.Controllers
         {
             return Ok(await _characterService.AddCharacter(newCharacter));
         }
+
+        [HttpPut]
+        public async Task<ActionResult<ServiceResponse<List<GetCharacterDto>>>> UpdtaeCharacter(UpdateCharacterDto updatedCharacter)
+        {
+            var response = await _characterService.UpdateCharacter(updatedCharacter);
+            // 更新資料時，若沒有照到對應的資料則回傳 404
+            if(response.Data is null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
     }
 }
