@@ -52,5 +52,18 @@ namespace dotnet_rpg.Controllers
             }
             return Ok(response);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ServiceResponse<GetCharacterDto>>> DeleteCharacter(int id)
+        {
+            var response = await _characterService.DeleteCharacter(id);
+            // 更新資料時，若沒有照到對應的資料則回傳 404
+            if(response.Data is null)
+            {
+                return NotFound(response);
+            }
+            return Ok(response);
+        }
+        
     }
 }

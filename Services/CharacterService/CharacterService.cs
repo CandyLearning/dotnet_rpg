@@ -36,6 +36,35 @@ namespace dotnet_rpg.Services.CharacterService
             return serviceResponse;
         }
 
+        /// <summary>
+        /// 刪除角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            try
+            {
+                
+                var character = characters.FirstOrDefault(c => c.Id == id);
+                if(character is null)
+                {
+                    throw new Exception($"發生錯誤:角色ID: {id} 沒有找到!");
+                }
+                characters.Remove(character);
+
+                serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            }
+            catch(Exception ex)
+            {
+                serviceResponse.Success = false;
+                serviceResponse.Message = ex.Message;
+            }
+            
+            return serviceResponse;
+        }
+
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
             
